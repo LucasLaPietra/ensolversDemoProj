@@ -32,7 +32,7 @@ public class ItemController {
 		try 
         {
 		    itemService.create(itemDTO);
-			return ResponseEntity.created(new URI("api/producto" + itemDTO)).body(itemDTO);
+			return ResponseEntity.created(new URI("api/item" + itemDTO)).body(itemDTO);
 			
 		} 
         catch (Exception e) 

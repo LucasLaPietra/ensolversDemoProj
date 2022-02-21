@@ -37,7 +37,7 @@ public class ItemService {
     public ItemDto findById(long idItem) {
         Optional<Item> item = itemRepository.findById(idItem);
         if (item.isPresent()) {
-            return modelMapper.map(item, ItemDto.class);
+            return modelMapper.map(item.get(), ItemDto.class);
         }
         else throw new NullPointerException();
     }
@@ -60,7 +60,8 @@ public class ItemService {
             Item presentItem = item.get();
             presentItem.setTitle(itemDto.getTitle());
             presentItem.setChecked(itemDto.isChecked());
-            return modelMapper.map(item, ItemUpdateDto.class);
+            itemRepository.save(presentItem);
+            return modelMapper.map(presentItem, ItemUpdateDto.class);
         }
         else throw new NullPointerException();
     }
