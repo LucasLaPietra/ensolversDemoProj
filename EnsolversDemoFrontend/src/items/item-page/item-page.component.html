@@ -1,0 +1,18 @@
+<h2>Item Page</h2>
+<mat-divider></mat-divider>
+<div *ngFor="let item of items">
+  <mat-card>
+    <mat-checkbox (change)="setChecked(item)" [checked]="item.checked?item.checked:false">{{item.title}}</mat-checkbox>
+    <button mat-button color="primary" (click)="openEditDialog(item)">Edit</button>
+    <button mat-button color="warn" (click)="delete(item)">Remove</button>
+  </mat-card>
+</div>
+
+<form>
+  <mat-form-field class="input-field">
+    <mat-label>Add a task</mat-label>
+    <input matInput placeholder="Insert task title" #title>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="add-button" (click)="addItem(title.value); title.value=''">Add</button>
+</form>
+
