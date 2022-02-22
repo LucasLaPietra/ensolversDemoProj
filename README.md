@@ -10,6 +10,8 @@
 
 **Notes:**
 - Postgres connection is configured on port 5432, under user postgres and password luxlp1996
+- In case the script to run the backend doesn't work, it can easily be built and run via VSCode.
+- For any question regarding this application feel free to contact me at my mail, lelapietra@gmail.com
 
 **HowTo:**
 - Run script.sql from Postgres client to create DB
