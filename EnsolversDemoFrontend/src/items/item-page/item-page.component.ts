@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { FoldersService } from 'src/folders/folders.service';
 import { Item } from '../items.model';
 import { ItemsService } from '../items.service';
 
@@ -11,21 +13,28 @@ import { ItemsService } from '../items.service';
 export class ItemPageComponent implements OnInit {
   items: Item[] = [];
 
-  constructor(private itemsService:ItemsService, public dialog: MatDialog) { }
+  idFolder: number = this.route.snapshot.params['id'];
+
+  folderName:string = "";
+
+  constructor(private itemsService:ItemsService, private foldersService:FoldersService, public dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getItems();
+
+    this.getItems(this.idFolder);
   }
 
-  getItems(): void {
-    this.itemsService.GetItems()
+  getItems(id: number): void {
+    this.foldersService.GetItemsFromFolder(id)
     .subscribe(items => this.items = items);
+
+    this.foldersService.GetFolder(id).subscribe(x=>this.folderName=x.title as string)
   }
 
   addItem(title: string): void {
     title = title.trim();
     if (!title) { return; }
-    const item: Item = { title:title };
+    const item: Item = { title:title, folder:{idFolder:this.idFolder} };
     console.log(item)
     this.itemsService.CreateItem(item)
     .subscribe(item => {
@@ -49,7 +58,7 @@ export class ItemPageComponent implements OnInit {
   }
 
   openEditDialog(item:Item): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    const dialogRef = this.dialog.open(EditItemDialog, {
       width: '250px',
       data: item,
     });
@@ -69,9 +78,9 @@ export class ItemPageComponent implements OnInit {
   selector: 'app-item-edition-dialog',
   templateUrl: 'app-item-edition-dialog.html',
 })
-export class DialogOverviewExampleDialog {
+export class EditItemDialog {
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    public dialogRef: MatDialogRef<EditItemDialog>,
     @Inject(MAT_DIALOG_DATA) public item: Item,
   ) {}
 

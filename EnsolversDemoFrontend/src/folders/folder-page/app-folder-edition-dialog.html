@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <p>Folder edition</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Insert folder title</mat-label>
+    <input matInput [(ngModel)]="folder.title" >
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="folder" cdkFocusInitial>Edit</button>
+</div>

@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +18,10 @@ public class Item {
     private String title;
 
     private boolean checked;
+
+    @ManyToOne
+    @JoinColumn(name="idFolder")
+    private Folder folder;
 
     public Long getIdItem() {
         return idItem;
@@ -41,6 +47,14 @@ public class Item {
         this.title = title;
     }
 
+    public Folder getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
+    }
+
     public Item(Long idItem, String title, boolean checked) {
         this.idItem = idItem;
         this.title = title;
@@ -49,4 +63,5 @@ public class Item {
 
     public Item() {
     }
+
 }

@@ -3,10 +3,11 @@ package com.ensolversdemoproj.demoproj.Controllers;
 import java.net.URI;
 import java.util.List;
 
-import com.ensolversdemoproj.demoproj.DTO.ItemCreationDto;
+import com.ensolversdemoproj.demoproj.DTO.FolderCreationDto;
+import com.ensolversdemoproj.demoproj.DTO.FolderDto;
+import com.ensolversdemoproj.demoproj.DTO.FolderUpdateDto;
 import com.ensolversdemoproj.demoproj.DTO.ItemDto;
-import com.ensolversdemoproj.demoproj.DTO.ItemUpdateDto;
-import com.ensolversdemoproj.demoproj.Services.ItemService;
+import com.ensolversdemoproj.demoproj.Services.FolderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/item")
-public class ItemController {
+@RequestMapping("/api/folder")
+public class FolderController {
     @Autowired
-	private ItemService itemService;
+	private FolderService folderService;
 
     @PostMapping
-	private ResponseEntity<ItemDto> guardar(@RequestBody ItemCreationDto itemDTO) {
+	private ResponseEntity<FolderDto> guardar(@RequestBody FolderCreationDto folderDTO) {
 		try 
         {
-		    ItemDto itemCreated = itemService.create(itemDTO);
-			return ResponseEntity.created(new URI("api/item" + itemCreated)).body(itemCreated);
+		    FolderDto folderCreated = folderService.create(folderDTO);
+			return ResponseEntity.created(new URI("api/folder" + folderCreated)).body(folderCreated);
 			
 		} 
         catch (Exception e) 
@@ -43,19 +44,28 @@ public class ItemController {
 	}
 
     @GetMapping(value = "{id}")
-	private ResponseEntity<ItemDto> getById(@PathVariable("id") Long id) {
+	private ResponseEntity<FolderDto> getById(@PathVariable("id") Long id) {
 		try {
-			return ResponseEntity.ok(itemService.findById(id));
+			return ResponseEntity.ok(folderService.findById(id));
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
-	@GetMapping
-	private ResponseEntity<List<ItemDto>> getAll() {
+    @GetMapping(value = "/items/{id}")
+	private ResponseEntity<List<ItemDto>> getItemsById(@PathVariable("id") Long id) {
 		try {
-			return ResponseEntity.ok(itemService.findAll());
+			return ResponseEntity.ok(folderService.getAllItems(id));
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping
+	private ResponseEntity<List<FolderDto>> getAll() {
+		try {
+			return ResponseEntity.ok(folderService.findAll());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
@@ -65,7 +75,7 @@ public class ItemController {
 	@DeleteMapping(value = "{id}")
 	private ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 		try {
-			itemService.delete(id);
+			folderService.delete(id);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -74,12 +84,12 @@ public class ItemController {
 	}
 
 	@PutMapping(value = "{id}")
-	private ResponseEntity<ItemUpdateDto> update(@RequestBody ItemUpdateDto itemDto,
+	private ResponseEntity<FolderUpdateDto> update(@RequestBody FolderUpdateDto folderDto,
 			@PathVariable("id") Long id) {
 		try {
-			ItemUpdateDto updatedItem = itemService.update(itemDto, id);
+			FolderUpdateDto updatedFolder = folderService.update(folderDto, id);
 			ResponseEntity.ok().build();
-			return ResponseEntity.ok(updatedItem);
+			return ResponseEntity.ok(updatedFolder);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}

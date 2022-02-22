@@ -23,11 +23,12 @@ public class ItemService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ItemCreationDto create(ItemCreationDto itemDto){
+    public ItemDto create(ItemCreationDto itemDto){
+
         Item item = modelMapper.map(itemDto, Item.class);
         item.setChecked(false);
-        itemRepository.save(item);
-        return modelMapper.map(item, ItemCreationDto.class);
+        Item savedItem = itemRepository.save(item);
+        return modelMapper.map(savedItem, ItemDto.class);
     }
 
     public void delete(long idItem) {

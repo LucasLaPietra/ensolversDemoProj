@@ -1,0 +1,20 @@
+<app-top-bar></app-top-bar>
+<h2>Folder Page</h2>
+<mat-divider></mat-divider>
+<div *ngFor="let folder of folders">
+  <mat-card>
+    {{folder.title}}
+    <button mat-button color="primary" [routerLink]="['/items', folder.idFolder]">View items</button>
+    <button mat-button color="primary" (click)="openEditDialog(folder)">Edit</button>
+    <button mat-button color="warn" (click)="delete(folder)">Remove</button>
+  </mat-card>
+</div>
+
+<form>
+  <mat-form-field class="input-field">
+    <mat-label>Add a folder</mat-label>
+    <input matInput placeholder="Insert folder title" #title>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="add-button" (click)="addFolder(title.value); title.value=''">Add</button>
+</form>
+

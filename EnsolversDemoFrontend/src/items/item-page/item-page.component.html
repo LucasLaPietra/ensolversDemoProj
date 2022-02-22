@@ -1,4 +1,6 @@
-<h2>Item Page</h2>
+<app-top-bar></app-top-bar>
+<button mat-raised-button [routerLink]="['']"  class="back-button">Go back</button>
+<h2>{{folderName}} > Items</h2>
 <mat-divider></mat-divider>
 <div *ngFor="let item of items">
   <mat-card>
